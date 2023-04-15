@@ -1,0 +1,49 @@
+id: 123
+name: plastics_dataset
+env: dev
+version: "0.1"
+tasks:
+  node1:
+    type: in_fs_json
+    config:
+      basePath: "src/main/resources/data/families"
+      filters:
+        date: "20230101"
+      tag: source_plastics
+  node2:
+    type: transformer
+    from: node1
+    config:
+      transformer:
+        - "type:fam_lit:type"
+        - "type:rconcat:subtype"
+        - "select:application,type,ref"
+      tag: source_plastics
+  node3:
+    type: free
+    config:
+      format: json
+      options:
+        path: "src/main/resources/data/materials/subtype=*"
+        inferSchema: "true"
+      tag: dim_tab_materials
+  node4:
+    type: binder
+    left: node2
+    right: node3
+    config:
+      mode: left_outer
+      keys:
+        - "ref"
+      tag: source_plastics
+  node5:
+    type: out_fs_json
+    from: node4
+    config:
+      path: "src/main/resources/data/output/plastic_DS"
+      tag: json_sink_plastic_DS
+  nodeX:
+    type: console
+    from: node4
+    config:
+      tag: sink_plastic_DS
