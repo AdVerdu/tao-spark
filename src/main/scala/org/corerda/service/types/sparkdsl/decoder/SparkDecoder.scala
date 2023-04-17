@@ -39,7 +39,7 @@ object SparkDecoder {
       case Right("out_fs_json") =>
         for {
           from <- taskCursor.get[String]("from")
-          writer <- taskCursor.get[ConsoleWriter]("config")
+          writer <- taskCursor.get[CustomWriter]("config")
         } yield Node(One(from), writer)
       case Right(other) => throw notDefined(other)
     }
