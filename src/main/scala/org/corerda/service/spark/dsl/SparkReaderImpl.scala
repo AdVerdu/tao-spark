@@ -1,13 +1,14 @@
-package org.corerda.service.types.sparkdsl
+package org.corerda.service.spark.dsl
 
+import org.corerda.service.spark.Session.spark
 import org.corerda.entities._
-import org.corerda.service.types.sparkdsl.SparkDSLImpl.innerType
+import SparkDSLImpl.innerType
+
 
 object SparkReaderImpl {
-  val spark = org.apache.spark.sql.SparkSession.active
 
   case class CustomReader(basePath: String, filters: Map[String, String], tag: String) extends Reader[innerType] {
-    val filtersFormat = filters.map(f => s"${f._1}=${f._2}").mkString("/")
+    private val filtersFormat = filters.map(f => s"${f._1}=${f._2}").mkString("/")
 
     def read: innerType = spark.read
       .format("json")

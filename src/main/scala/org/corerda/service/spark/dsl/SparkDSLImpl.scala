@@ -1,14 +1,15 @@
-package org.corerda.service.types.sparkdsl
+package org.corerda.service.spark.dsl
 
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, concat, explode_outer, lit}
 import org.corerda.entities._
 
 object SparkDSLImpl {
+  // TODO - review this type annotation
   type innerType = DataFrame
 
   case class TransformerCmp(transformer: List[String], tag: String) extends Transformer[innerType] {
-    val lookup: List[innerType => innerType] =
+    private val lookup: List[innerType => innerType] =
       transformer.map {
         case s"$source:flat:$target" => (data: DataFrame) => data.withColumn(target, col(source))
         case s"$source:lit_$str:$target" => (data: DataFrame) => data.withColumn(target, concat(col(source), lit(s"_$str")))
@@ -24,7 +25,7 @@ object SparkDSLImpl {
   }
 
   case class BinderCmp(mode: String, keys: Seq[String], tag: String) extends Binder[innerType] {
-    val operation: (innerType, innerType) => innerType = (left, right) => left.join(right, keys, mode)
+    private val operation: (innerType, innerType) => innerType = (left, right) => left.join(right, keys, mode)
 
     def bind(left: innerType, right: innerType): innerType = operation(left, right)
   }

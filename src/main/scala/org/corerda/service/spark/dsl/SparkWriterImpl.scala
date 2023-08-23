@@ -1,8 +1,9 @@
-package org.corerda.service.types.sparkdsl
+package org.corerda.service.spark.dsl
 
 import org.apache.spark.sql.SaveMode
 import org.corerda.entities._
-import org.corerda.service.types.sparkdsl.SparkDSLImpl.innerType
+import SparkDSLImpl.innerType
+
 
 object SparkWriterImpl {
 

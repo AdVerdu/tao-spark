@@ -1,11 +1,11 @@
-package org.corerda.service.types.sparkdsl.decoder
+package org.corerda.service.decoder
 
 import io.circe.generic.auto._
 import io.circe.Decoder
 import org.corerda.entities._
-import org.corerda.service.types.sparkdsl.SparkDSLImpl._
-import org.corerda.service.types.sparkdsl.SparkReaderImpl._
-import org.corerda.service.types.sparkdsl.SparkWriterImpl._
+import org.corerda.service.spark.dsl.SparkDSLImpl._
+import org.corerda.service.spark.dsl.SparkReaderImpl._
+import org.corerda.service.spark.dsl.SparkWriterImpl._
 
 object SparkDecoder {
   private def notDefined(str: String): IllegalArgumentException = new IllegalArgumentException(s"$str is not Defined yet")
